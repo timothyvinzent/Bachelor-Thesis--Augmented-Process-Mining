@@ -1,0 +1,82 @@
+{
+  "GENERATE": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [],
+    "signature": {
+      "instructions": "Based on an instruction to create a new column, generate Python code to execute instruction. Follow the instructions provided closely. \\nDo not use use .apply and lambda functions to create the new column, as those will result in nan values when grouping by case (subsequent column dtype will be float64 or object). \\nInstead use **boolean operators first** for example: dp['some_new_column'] = (dp['first_col'] == True) & (dp['second_col'] == True) and in a separate second step group by case -> 'case_concept_name', then count using for example value_counts() or merge the new column using robust methods back into the dataframe (e.g. .map or .merge). (fillna(0).astype(int) will most likely also be incorrect.\\nClearly separate grouped operations from merging indices together",
+      "fields": [
+        {
+          "prefix": "Column Description:",
+          "description": "Information about the database and its tables"
+        },
+        {
+          "prefix": "Instruction:",
+          "description": "${instruction}"
+        },
+        {
+          "prefix": "Generated Code:",
+          "description": "Python code which will be executed to fulfill instruction, for boolean columns only output boolean values (not integers)"
+        }
+      ]
+    }
+  },
+  "EXTRACT": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [],
+    "signature": {
+      "instructions": "Extract the name of the column and the SQLITE type of the column based on the instruction",
+      "fields": [
+        {
+          "prefix": "Instruction:",
+          "description": "${instruction}"
+        },
+        {
+          "prefix": "New Column Name:",
+          "description": "Only write the name of the new column to be added to the database"
+        },
+        {
+          "prefix": "Column Type In Sql:",
+          "description": "[INTEGER, BOOLEAN, DATETIME]"
+        }
+      ]
+    }
+  },
+  "ANSWER": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [],
+    "signature": {
+      "instructions": "Given the generated_code, the instruction and column descriptions, provide a short and to the point description of the column which was added to the database in the same format previous columns have been described.",
+      "fields": [
+        {
+          "prefix": "Generated Code:",
+          "description": "${generated_code}"
+        },
+        {
+          "prefix": "Instruction:",
+          "description": "${instruction}"
+        },
+        {
+          "prefix": "Column Description:",
+          "description": "Information about the database and its tables"
+        },
+        {
+          "prefix": "Description:",
+          "description": "Short description of the column added to the dataframe using the same format as the previous columns."
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.12.8",
+      "dspy": "2.5.43",
+      "cloudpickle": "3.1.0"
+    }
+  }
+}

@@ -1,0 +1,249 @@
+{
+    "generated_query": {
+      "lm": null,
+      "traces": [],
+      "train": [],
+      "demos": [
+        {
+          "augmented": true,
+          "question": "How many cases are in the log?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "approach": "To determine the number of cases in the log, we need to count the distinct values of the 'case_concept_name' column. This column serves as the case identifier and is consistent across all rows pertaining to the same case. Therefore, the query should select the count of distinct 'case_concept_name' from the 'event_log' table. This will give us the total number of unique cases present in the log.",
+          "sqlite_query": "{\"sql\":\"SELECT COUNT(DISTINCT case_concept_name) AS number_of_cases FROM event_log;\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many Create Fine events occur?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "approach": "To determine the number of 'Create Fine' events, we need to count the occurrences of this specific event type in the 'concept_name' column. Since 'concept_name' directly refers to the type of event for each row, we can simply filter the rows where 'concept_name' is 'Create Fine' and count these rows. This approach does not require grouping by case since we are interested in the total number of 'Create Fine' events across all cases, and each row represents an individual event. Therefore, the query should select from the 'event_log' table where 'concept_name' equals 'Create Fine' and count the resulting rows.",
+          "sqlite_query": "{\"sql\":\"SELECT COUNT(*) AS create_fine_event_count FROM event_log WHERE concept_name = 'Create Fine';\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many Add penalty events occur?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "approach": "To determine the total number of 'Add penalty' events, we need to sum the 'add_penalty_count' column across all unique cases. Since 'add_penalty_count' is consistent across all rows for a given case, we can select distinct 'case_concept_name' and sum the 'add_penalty_count' values. This ensures that we do not double-count events by considering multiple rows for the same case. The SQL query would look like: SELECT SUM(add_penalty_count) FROM (SELECT DISTINCT case_concept_name, add_penalty_count FROM event_log).",
+          "sqlite_query": "{\"sql\":\"SELECT SUM(add_penalty_count) AS total_add_penalty_events FROM (SELECT DISTINCT case_concept_name, add_penalty_count FROM event_log)\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many Send Appeal to Prefecture event occur?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "approach": "To determine the total number of 'Send Appeal to Prefecture' events, we should utilize the 'send_appeal_to_prefecture_count' column. This column provides the number of times the 'Send Appeal to Prefecture' event occurs for each case and is consistent across all rows pertaining to the same case. Since this value is the same for every event in a case, we should group by 'case_concept_name' to ensure we do not double-count the same case's events. The query should sum the 'send_appeal_to_prefecture_count' values across all distinct cases to get the total number of 'Send Appeal to Prefecture' events. The SQL query would look like: SELECT SUM(send_appeal_to_prefecture_count) FROM event_log GROUP BY case_concept_name; This will give us the total count of the 'Send Appeal to Prefecture' events across all cases.",
+          "sqlite_query": "{\"sql\":\"SELECT SUM(send_appeal_to_prefecture_count) AS total_send_appeal_to_prefecture_events FROM (SELECT DISTINCT case_concept_name, send_appeal_to_prefecture_count FROM event_log) AS distinct_cases;\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many times do each of the event types occur in the log?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "approach": "To determine how many times each event type occurs in the log, we need to focus on the 'concept_name' column, which contains the event type names. Since each row in the 'event_log' table represents an event, we can simply count the occurrences of each unique value in the 'concept_name' column. This can be achieved by using a SQL query that groups the data by 'concept_name' and counts the number of rows for each group. The query would look like this: SELECT concept_name, COUNT(*) AS event_count FROM event_log GROUP BY concept_name. This will give us the total number of occurrences for each event type in the log.",
+          "sqlite_query": "{\"sql\":\"SELECT concept_name, COUNT(*) AS event_count FROM event_log GROUP BY concept_name;\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many Send Fine events occur?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "approach": "To determine the total number of 'Send Fine' events, we can utilize the 'send_fine_count' column, which provides the number of times the 'Send Fine' event occurs for each case. Since this column is consistent across all rows pertaining to the same case, we should group by the 'case_concept_name' to avoid counting the same case multiple times. The query should sum the 'send_fine_count' values across all unique cases to get the total number of 'Send Fine' events. The SQL query would look like: SELECT SUM(send_fine_count) FROM event_log GROUP BY case_concept_name; This will give us the total count of 'Send Fine' events across all cases.",
+          "sqlite_query": "{\"sql\":\"SELECT SUM(send_fine_count) FROM (SELECT DISTINCT case_concept_name, send_fine_count FROM event_log);\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many cases are Sent for Credit Collection?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "approach": "To determine how many cases are sent for credit collection, we need to count the distinct cases where the 'credit_collected' column has a value of 1. This column acts as a boolean indicator that is consistent across all events within a case, indicating whether any event in the case involves sending the fine for credit collection. Therefore, the query should select distinct 'case_concept_name' where 'credit_collected' equals 1, and then count these distinct cases. This approach ensures that we count each case only once, regardless of how many events within that case involve credit collection.",
+          "sqlite_query": "{\"sql\":\"SELECT COUNT(DISTINCT case_concept_name) AS num_cases_sent_for_credit_collection FROM event_log WHERE credit_collected = 1;\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many cases have been added two or more penalties?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "approach": "To determine how many cases have been added two or more penalties, we need to focus on the 'add_penalty_count' column, which indicates the number of times the 'Add penalty' event occurs for each case. Since this column is consistent across all rows of a case, it serves as a case predicate. The task is to count the number of distinct cases where 'add_penalty_count' is greater than or equal to 2. \n\nThe query should be constructed as follows:\n1. Select the 'case_concept_name' to identify distinct cases.\n2. Apply a WHERE clause to filter cases where 'add_penalty_count' is greater than or equal to 2.\n3. Use COUNT(DISTINCT case_concept_name) to count the number of such cases.\n\nThis approach ensures that we accurately count each case only once, even if multiple events are associated with it.",
+          "sqlite_query": "{\"sql\":\"SELECT COUNT(DISTINCT case_concept_name) AS number_of_cases_with_two_or_more_penalties FROM event_log WHERE add_penalty_count >= 2;\"}"
+        }
+      ],
+      "signature": {
+        "instructions": "Generate a single SQLite query that returns the specific information requested in the question \nand include relevant details such as duration or amount. When asked about information pertaining \nto cases (not events), group by case to avoid counting the same case multiple times. Aggregate when necessary,\nusing subqueries and outer queries to limit the output size and results in a table that answers the question directly.\nBe aware to make a distinction between questions that ask about cases and question that ask about events, since some of the available columns are aggregated over cases and might lead to wrong results when used in the wrong context.",
+        "fields": [
+          {
+            "prefix": "Question:",
+            "description": "${question}"
+          },
+          {
+            "prefix": "Column Description:",
+            "description": "Information about the database and its tables"
+          },
+          {
+            "prefix": "Approach:",
+            "description": "Suggested approach to generate the query"
+          },
+          {
+            "prefix": "Sqlite Query:",
+            "description": "${sqlite_query}"
+          }
+        ]
+      }
+    },
+    "reasoning": {
+      "lm": null,
+      "traces": [],
+      "train": [],
+      "demos": [
+        {
+          "augmented": true,
+          "question": "How many cases are in the log?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "reasoning": "{\"approach\":\"To determine the number of cases in the log, we need to count the distinct values of the 'case_concept_name' column. This column serves as the case identifier and is consistent across all rows pertaining to the same case. Therefore, the query should select the count of distinct 'case_concept_name' from the 'event_log' table. This will give us the total number of unique cases present in the log.\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many Create Fine events occur?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "reasoning": "{\"approach\":\"To determine the number of 'Create Fine' events, we need to count the occurrences of this specific event type in the 'concept_name' column. Since 'concept_name' directly refers to the type of event for each row, we can simply filter the rows where 'concept_name' is 'Create Fine' and count these rows. This approach does not require grouping by case since we are interested in the total number of 'Create Fine' events across all cases, and each row represents an individual event. Therefore, the query should select from the 'event_log' table where 'concept_name' equals 'Create Fine' and count the resulting rows.\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many Add penalty events occur?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "reasoning": "{\"approach\":\"To determine the total number of 'Add penalty' events, we need to sum the 'add_penalty_count' column across all unique cases. Since 'add_penalty_count' is consistent across all rows for a given case, we can select distinct 'case_concept_name' and sum the 'add_penalty_count' values. This ensures that we do not double-count events by considering multiple rows for the same case. The SQL query would look like: SELECT SUM(add_penalty_count) FROM (SELECT DISTINCT case_concept_name, add_penalty_count FROM event_log).\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many Send Appeal to Prefecture event occur?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "reasoning": "{\"approach\":\"To determine the total number of 'Send Appeal to Prefecture' events, we should utilize the 'send_appeal_to_prefecture_count' column. This column provides the number of times the 'Send Appeal to Prefecture' event occurs for each case and is consistent across all rows pertaining to the same case. Since this value is the same for every event in a case, we should group by 'case_concept_name' to ensure we do not double-count the same case's events. The query should sum the 'send_appeal_to_prefecture_count' values across all distinct cases to get the total number of 'Send Appeal to Prefecture' events. The SQL query would look like: SELECT SUM(send_appeal_to_prefecture_count) FROM event_log GROUP BY case_concept_name; This will give us the total count of the 'Send Appeal to Prefecture' events across all cases.\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many times do each of the event types occur in the log?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "reasoning": "{\"approach\":\"To determine how many times each event type occurs in the log, we need to focus on the 'concept_name' column, which contains the event type names. Since each row in the 'event_log' table represents an event, we can simply count the occurrences of each unique value in the 'concept_name' column. This can be achieved by using a SQL query that groups the data by 'concept_name' and counts the number of rows for each group. The query would look like this: SELECT concept_name, COUNT(*) AS event_count FROM event_log GROUP BY concept_name. This will give us the total number of occurrences for each event type in the log.\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many Send Fine events occur?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "reasoning": "{\"approach\":\"To determine the total number of 'Send Fine' events, we can utilize the 'send_fine_count' column, which provides the number of times the 'Send Fine' event occurs for each case. Since this column is consistent across all rows pertaining to the same case, we should group by the 'case_concept_name' to avoid counting the same case multiple times. The query should sum the 'send_fine_count' values across all unique cases to get the total number of 'Send Fine' events. The SQL query would look like: SELECT SUM(send_fine_count) FROM event_log GROUP BY case_concept_name; This will give us the total count of 'Send Fine' events across all cases.\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many cases are Sent for Credit Collection?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "reasoning": "{\"approach\":\"To determine how many cases are sent for credit collection, we need to count the distinct cases where the 'credit_collected' column has a value of 1. This column acts as a boolean indicator that is consistent across all events within a case, indicating whether any event in the case involves sending the fine for credit collection. Therefore, the query should select distinct 'case_concept_name' where 'credit_collected' equals 1, and then count these distinct cases. This approach ensures that we count each case only once, regardless of how many events within that case involve credit collection.\"}"
+        },
+        {
+          "augmented": true,
+          "question": "How many cases have been added two or more penalties?",
+          "column_description": "THE DATABASE CONTAINS THE TABLE: (omitted in demonstration)",
+          "reasoning": "{\"approach\":\"To determine how many cases have been added two or more penalties, we need to focus on the 'add_penalty_count' column, which indicates the number of times the 'Add penalty' event occurs for each case. Since this column is consistent across all rows of a case, it serves as a case predicate. The task is to count the number of distinct cases where 'add_penalty_count' is greater than or equal to 2. \\n\\nThe query should be constructed as follows:\\n1. Select the 'case_concept_name' to identify distinct cases.\\n2. Apply a WHERE clause to filter cases where 'add_penalty_count' is greater than or equal to 2.\\n3. Use COUNT(DISTINCT case_concept_name) to count the number of such cases.\\n\\nThis approach ensures that we accurately count each case only once, even if multiple events are associated with it.\"}"
+        }
+      ],
+      "signature": {
+        "instructions": "Objective: Develop a strategy and logic to create a single SQLite query that will answer a given question.\nDatabase Information: Use the details about the database and its columns to guide your approach. \nBe specific about whether the question pertains to \"cases\" or \"events,\" since every row is an event, and multiple events can be part of a single case.\nColumn Details: Some columns contain the same information for each event (row) per case (referred to as \"case predicate\"). Other columns are independent of cases and refer to events directly.\nYou can determine this, based on whether the column description mentions that all values are the same for a case or if the column is aggregated over a case.\nGrouping: When asked about questions independent of cases and you are using a column that is a case predicate, group by case to avoid counting an aggregated value multiple times.\nDo not forget about this for percentage calculations as well (using something like (DISTINCT case_concept_name) FILTER (WHERE col = 1) instead of not grouping by case first for case predicates).\nQuery Construction: Do not write the actual query. Instead, provide a detailed explanation of how to construct the query.\nAggregation: Aggregate data when necessary. Use subqueries and outer queries to limit the output size. Ensure the final result is a table that directly answers the question.\nSome questions might have multiple valid anwers(i.e finding case with highest value x, might have mutliple cases with the same highest value), be aware of this and consider LIMIT 10 instead of LIMIT 1 in such cases.",
+        "fields": [
+          {
+            "prefix": "Question:",
+            "description": "${question}"
+          },
+          {
+            "prefix": "Column Description:",
+            "description": "Information about the database and its tables"
+          },
+          {
+            "prefix": "Reasoning:",
+            "description": "${reasoning}"
+          }
+        ]
+      }
+    },
+    "ans": {
+      "lm": null,
+      "traces": [],
+      "train": [],
+      "demos": [
+        {
+          "augmented": true,
+          "question": "How many cases are in the log?",
+          "table": "number_of_cases \n150370",
+          "sql": "SELECT COUNT(DISTINCT case_concept_name) AS number_of_cases FROM event_log;",
+          "answer": "150370"
+        },
+        {
+          "augmented": true,
+          "question": "How many Create Fine events occur?",
+          "table": "create_fine_event_count \n150370",
+          "sql": "SELECT COUNT(*) AS create_fine_event_count FROM event_log WHERE concept_name = 'Create Fine';",
+          "answer": "150370"
+        },
+        {
+          "augmented": true,
+          "question": "How many Add penalty events occur?",
+          "table": "total_add_penalty_events \n79860",
+          "sql": "SELECT SUM(add_penalty_count) AS total_add_penalty_events FROM (SELECT DISTINCT case_concept_name, add_penalty_count FROM event_log)",
+          "answer": "79860"
+        },
+        {
+          "augmented": true,
+          "question": "How many Send Appeal to Prefecture event occur?",
+          "table": "total_send_appeal_to_prefecture_events \n4141",
+          "sql": "SELECT SUM(send_appeal_to_prefecture_count) AS total_send_appeal_to_prefecture_events FROM (SELECT DISTINCT case_concept_name, send_appeal_to_prefecture_count FROM event_log) AS distinct_cases;",
+          "answer": "4141"
+        },
+        {
+          "augmented": true,
+          "question": "How many times do each of the event types occur in the log?",
+          "table": "concept_name|event_count \nAdd penalty | 79860 \nAppeal to Judge | 555 \nCreate Fine | 150370 \nInsert Date Appeal to Prefecture | 4188 \nInsert Fine Notification | 79860 \nNotify Result Appeal to Offender | 896 \nPayment | 77601 \nReceive Result Appeal from Prefecture | 999 \nSend Appeal to Prefecture | 4141 \nSend Fine | 103987 \nSend for Credit Collection | 59013",
+          "sql": "SELECT concept_name, COUNT(*) AS event_count FROM event_log GROUP BY concept_name;",
+          "answer": "Add penalty: 79,860  \nAppeal to Judge: 555  \nCreate Fine: 150,370  \nInsert Date Appeal to Prefecture: 4,188  \nInsert Fine Notification: 79,860  \nNotify Result Appeal to Offender: 896  \nPayment: 77,601  \nReceive Result Appeal from Prefecture: 999  \nSend Appeal to Prefecture: 4,141  \nSend Fine: 103,987  \nSend for Credit Collection: 59,013"
+        },
+        {
+          "augmented": true,
+          "question": "How many Send Fine events occur?",
+          "table": "SUM(send_fine_count) \n103987",
+          "sql": "SELECT SUM(send_fine_count) FROM (SELECT DISTINCT case_concept_name, send_fine_count FROM event_log);",
+          "answer": "103987"
+        },
+        {
+          "augmented": true,
+          "question": "How many cases are Sent for Credit Collection?",
+          "table": "num_cases_sent_for_credit_collection \n59013",
+          "sql": "SELECT COUNT(DISTINCT case_concept_name) AS num_cases_sent_for_credit_collection FROM event_log WHERE credit_collected = 1;",
+          "answer": "59013"
+        },
+        {
+          "augmented": true,
+          "question": "How many cases have been added two or more penalties?",
+          "table": "number_of_cases_with_two_or_more_penalties \n0",
+          "sql": "SELECT COUNT(DISTINCT case_concept_name) AS number_of_cases_with_two_or_more_penalties FROM event_log WHERE add_penalty_count >= 2;",
+          "answer": "0"
+        }
+      ],
+      "signature": {
+        "instructions": "Carefully analyze the question and information in the table to form a helpful response. Use all the columns from the table (information) when writing your answer (don't leave away any additional information).",
+        "fields": [
+          {
+            "prefix": "Question:",
+            "description": "${question}"
+          },
+          {
+            "prefix": "Table:",
+            "description": "Pipe deliniated string representing a table."
+          },
+          {
+            "prefix": "Sql:",
+            "description": "SQL query that was executed to generate the table."
+          },
+          {
+            "prefix": "Answer:",
+            "description": "Only write the answer, not question or table)"
+          }
+        ]
+      }
+    },
+    "metadata": {
+      "dependency_versions": {
+        "python": "3.12.8",
+        "dspy": "2.5.43",
+        "cloudpickle": "3.1.0"
+      }
+    }
+  }

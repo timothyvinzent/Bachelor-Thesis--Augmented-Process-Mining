@@ -1,0 +1,1070 @@
+"Instruction","Column","df_name","Example","Rationale","Description","PM_Metric","Code 1","Code 2","Code 3","errors","pred_col","num_rows_different"
+"Create column called ""dismissed_by_prefecture"", defined as a boolean. True if any of the values of a case in column dismissal = ""#"" , if not False. Apply the same value across all rows of each case","dismissed_by_prefecture","1","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: dismissed_by_prefecture, Length: 561470, dtype: bool","No rationale","- 'dismissed_by_prefecture' (boolean): TRUE if any dismissal value in a case is '#', indicating the fine was dismissed by the prefecture; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Determine if any dismissal in a case is by the prefecture ('#')
+dismissed_by_prefecture_cases = dp.groupby('case_concept_name')['dismissal'].apply(lambda x: (x == '#').any())
+
+# Map the result back to the original dataframe
+dp['dismissed_by_prefecture'] = dp['case_concept_name'].map(dismissed_by_prefecture_cases)
+
+# Convert 'dismissed_by_prefecture' to boolean type
+dp['dismissed_by_prefecture'] = dp['dismissed_by_prefecture'].astype(bool)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN dismissed_by_prefecture BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: dismissed_by_prefecture, Length: 561470, dtype: bool","0"
+"Create column called ""dismissed_by_judge"", defined as a boolean. True if any of the values of a case in column dismissal = ""G"" , if not False. Apply the same value across all rows of each case","dismissed_by_judge","1","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: dismissed_by_judge, Length: 561470, dtype: bool","No rationale","- 'dismissed_by_judge' (boolean): TRUE if any dismissal value in a case is 'G', indicating the fine was dismissed by the judge; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Determine if any dismissal in a case is 'G'
+dismissed_by_judge_cases = dp.groupby('case_concept_name')['dismissal'].apply(lambda x: (x == 'G').any())
+
+# Map the result back to the original dataframe
+dp['dismissed_by_judge'] = dp['case_concept_name'].map(dismissed_by_judge_cases)
+
+# Convert 'dismissed_by_judge' to boolean type
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN dismissed_by_judge BOOLEAN"")
+
+# Write the updated dataframe to the database
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: dismissed_by_judge, Length: 561470, dtype: bool","0"
+"Create a column called ""maxtotalPaymentAmount"", type int, which for every case is the highest ""totalPaymentAmount"" value, if all the values of ""totalPaymentAmount"" are Nan or Null, simply use 0 instead. Make sure its the same value applied to each row of a case","maxtotalPaymentAmount","1","0         0
+1         0
+2         0
+3         0
+4         0
+         ..
+561465    0
+561466    0
+561467    0
+561468    0
+561469    0
+Name: maxtotalPaymentAmount, Length: 561470, dtype: int64","No rationale","- 'maxtotalPaymentAmount' (int): The highest recorded 'totalPaymentAmount' for each case, ensuring consistency across all rows within the same case. If all values are missing, it defaults to 0.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Calculate the maximum totalPaymentAmount for each case
+max_payment_per_case = dp.groupby('case_concept_name')['totalPaymentAmount'].max().reset_index()
+max_payment_per_case.rename(columns={'totalPaymentAmount': 'maxtotalPaymentAmount'}, inplace=True)
+
+# Merge the maximum payment back to the original dataframe
+dp = pd.merge(dp, max_payment_per_case, on='case_concept_name', how='left')
+
+# Ensure 'maxtotalPaymentAmount' is of integer type and has no NaN values
+dp['maxtotalPaymentAmount'] = dp['maxtotalPaymentAmount'].fillna(0).astype(int)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN maxtotalPaymentAmount INTEGER"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         0
+1         0
+2         0
+3         0
+4         0
+         ..
+561465    0
+561466    0
+561467    0
+561468    0
+561469    0
+Name: maxtotalPaymentAmount, Length: 561470, dtype: int64","0"
+"Create a column called ""expense_sum"", defined as type int, which sums all ""expense"" values per case, make sure this exepense_sum is the same for every row in a case","expense_sum","1","0         1100
+1         1100
+2         1100
+3         1100
+4         1100
+          ... 
+561465    1516
+561466    1516
+561467    1516
+561468    1516
+561469    1516
+Name: expense_sum, Length: 561470, dtype: int64","No rationale","- 'expense_sum' (int): The total sum of 'expense' values for each case, ensuring consistency across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Sum the 'expense' values per case
+expense_sums = dp.groupby('case_concept_name')['expense'].sum().reset_index(name='expense_sum')
+
+# Merge the sum back to the original dataframe
+dp = pd.merge(dp, expense_sums, on='case_concept_name', how='left')
+
+# Ensure 'expense_sum' is of integer type and has no NaN values
+dp['expense_sum'] = dp['expense_sum'].fillna(0).astype(int)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN expense_sum INTEGER"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         1100
+1         1100
+2         1100
+3         1100
+4         1100
+          ... 
+561465    1516
+561466    1516
+561467    1516
+561468    1516
+561469    1516
+Name: expense_sum, Length: 561470, dtype: int64","0"
+"Create a column called ""amount_last"", defined as type int, which takes the highest ""amount"" value per case, make sure ""amount_last"" is the same for every row in a case","amount_last","1","0          3500
+1          3500
+2          7150
+3          7150
+4          7150
+          ...  
+561465    26200
+561466    26200
+561467    26200
+561468    26200
+561469    26200
+Name: amount_last, Length: 561470, dtype: int64","No rationale","- 'amount_last' (int): The highest 'amount' value recorded for each case, ensuring consistency across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Calculate the highest 'amount' value per case
+amount_last_per_case = dp.groupby('case_concept_name')['amount'].max().reset_index(name='amount_last')
+
+# Merge the highest amount back to the original dataframe
+dp = pd.merge(dp, amount_last_per_case, on='case_concept_name', how='left')
+
+# Ensure 'amount_last' is of integer type and has no NaN values
+dp['amount_last'] = dp['amount_last'].fillna(0).astype(int)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN amount_last INTEGER"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0          3500
+1          3500
+2          7150
+3          7150
+4          7150
+          ...  
+561465    26200
+561466    26200
+561467    26200
+561468    26200
+561469    26200
+Name: amount_last, Length: 561470, dtype: int64","0"
+"Create a column called ""dismissed"" which is a boolean, TRUE if any of the values in a case of ""dismissal"" contain either  ""G"" or ""#"", if not False. Apply the same value across all rows of each case","dismissed","1","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: dismissed, Length: 561470, dtype: bool","No rationale","- 'dismissed' (boolean): TRUE if any dismissal value in a case is either 'G' or '#', indicating the fine was dismissed by the judge or the prefecture; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Determine if any dismissal value in a case is 'G' or '#'
+dismissed_cases = dp.groupby('case_concept_name')['dismissal'].apply(lambda x: x.isin(['G', '#']).any())
+
+# Map the result back to the original dataframe
+dp['dismissed'] = dp['case_concept_name'].map(dismissed_cases)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN dismissed BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: dismissed, Length: 561470, dtype: bool","0"
+"Create a column called ""credit_collected"" which is a boolean. True if any of the values in a case in the column ""concept_name"" contain ""Send for Credit Collection"", if not False. Apply the same value across all rows of each case.","credit_collected","1","0         False
+1         False
+2          True
+3          True
+4          True
+          ...  
+561465     True
+561466     True
+561467     True
+561468     True
+561469     True
+Name: credit_collected, Length: 561470, dtype: bool","No rationale","- 'credit_collected' (boolean): TRUE if the 'Send for Credit Collection' event occurs in any row of a case, indicating that the case was sent for credit collection; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Determine if 'Send for Credit Collection' occurs in any row of each case
+dp['credit_collected'] = dp.groupby('case_concept_name')['concept_name'].transform(
+    lambda x: 'Send for Credit Collection' in x.values
+)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN credit_collected BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2          True
+3          True
+4          True
+          ...  
+561465     True
+561466     True
+561467     True
+561468     True
+561469     True
+Name: credit_collected, Length: 561470, dtype: bool","0"
+"Create a column called ""penalty_added"" which is a boolean, TRUE if any of the values in a case in the column ""concept_name""contain ""Add penalty"", if not False. Apply the same value across all rows of each case.","penalty_added","1","0         False
+1         False
+2          True
+3          True
+4          True
+          ...  
+561465     True
+561466     True
+561467     True
+561468     True
+561469     True
+Name: penalty_added, Length: 561470, dtype: bool","No rationale","- 'penalty_added' (boolean): TRUE if the 'Add penalty' event occurs in any row of a case, indicating that a penalty was added; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Determine if 'Add penalty' occurs in any row of a case
+dp['penalty_added'] = dp.groupby('case_concept_name')['concept_name'].transform(lambda x: 'Add penalty' in x.values)
+
+# Convert 'penalty_added' to boolean type
+dp['penalty_added'] = dp['penalty_added'].astype(bool)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN penalty_added BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2          True
+3          True
+4          True
+          ...  
+561465     True
+561466     True
+561467     True
+561468     True
+561469     True
+Name: penalty_added, Length: 561470, dtype: bool","0"
+"Create a column called ""appealed_to_judge"" which is a boolean. TRUE if any of the values in a case in the column ""concept_name"" of a case contains ""Appeal to Judge"". False if else. Make sure ""appealed_to_judge"" is the same value across all rows of a case.","appealed_to_judge","1","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: appealed_to_judge, Length: 561470, dtype: bool","No rationale","- 'appealed_to_judge' (boolean): TRUE if the 'Appeal to Judge' event occurs in any row of a case, indicating that an appeal was made to a judge; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Determine if 'Appeal to Judge' occurs in any row of a case
+dp['appealed_to_judge'] = dp.groupby('case_concept_name')['concept_name'].transform(
+    lambda x: x.eq('Appeal to Judge').any()
+)
+
+# Convert 'appealed_to_judge' to boolean type
+dp['appealed_to_judge'] = dp['appealed_to_judge'].astype(bool)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN appealed_to_judge BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: appealed_to_judge, Length: 561470, dtype: bool","0"
+"Create a column called ""appealed_to_prefecture"" which is a boolean. TRUE if any of the values in a case in the column ""concept_name"" of a case contains ""Insert Date Appeal to Prefecture"". False if else. Make sure ""appealed_to_judge"" is the same value across all rows of a case.","appealed_to_prefecture","1","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: appealed_to_prefecture, Length: 561470, dtype: bool","No rationale","- 'appealed_to_prefecture' (boolean): TRUE if the 'Insert Date Appeal to Prefecture' event occurs in any row of a case, indicating that an appeal was made to the prefecture; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Determine if there is an appeal to prefecture for each case
+dp['appealed_to_prefecture'] = dp.groupby('case_concept_name')['concept_name'].transform(
+    lambda x: x.isin(['Insert Date Appeal to Prefecture']).any()
+)
+
+# Update the database table with the new column 'appealed_to_prefecture'
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN appealed_to_prefecture BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: appealed_to_prefecture, Length: 561470, dtype: bool","0"
+"Create a column called ""outstanding_balance"", as type int, which is defined as ""amount_last"" + ""expense_sum"" - ""maxtotalPaymentAmount"" for only the last row/event per case (i.e only consider the last row for each case during the calculation), make sure ""outstanding_balance"" is the same for every row in a case.","outstanding_balance","2","0          4600
+1          4600
+2          8250
+3          8250
+4          8250
+          ...  
+561465    27716
+561466    27716
+561467    27716
+561468    27716
+561469    27716
+Name: outstanding_balance, Length: 561470, dtype: int64","No rationale","- 'outstanding_balance' (int): The calculated outstanding balance for each case, determined as 'amount_last' + 'expense_sum' - 'maxtotalPaymentAmount', based on the last event in each case. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Identify the last row for each case
+last_rows = dp.sort_values('time_timestamp').groupby('case_concept_name').tail(1)
+
+# Calculate the outstanding balance for the last row of each case
+last_rows['outstanding_balance'] = last_rows['amount_last'] + last_rows['expense_sum'] - last_rows['maxtotalPaymentAmount']
+
+# Merge the outstanding balance back to the original dataframe
+dp = pd.merge(dp, last_rows[['case_concept_name', 'outstanding_balance']], on='case_concept_name', how='left')
+
+# Ensure 'outstanding_balance' is of integer type and has no NaN values
+dp['outstanding_balance'] = dp['outstanding_balance'].fillna(0).astype(int)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN outstanding_balance INTEGER"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0          4600
+1          4600
+2          8250
+3          8250
+4          8250
+          ...  
+561465    27716
+561466    27716
+561467    27716
+561468    27716
+561469    27716
+Name: outstanding_balance, Length: 561470, dtype: int64","0"
+"Create a column called ""credit_collected_AND_dismissed"" which is a boolean. Defined as TRUE if per case any of the rows are TRUE in the column ""dismissed"" and TRUE for the column ""credit_collected"". If Else False. Make sure the value for ""credit_collected_AND_dismissed"" is the same across all rows of a case. ","credit_collected_AND_dismissed","2","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: credit_collected_AND_dismissed, Length: 561470, dtype: bool","No rationale","- 'credit_collected_AND_dismissed' (boolean): TRUE if any row in a case has both 'dismissed' and 'credit_collected' as TRUE, indicating the fine was both sent for credit collection and dismissed; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Create the 'credit_collected_AND_dismissed' column
+credit_collected_and_dismissed = dp.groupby('case_concept_name').apply(
+    lambda x: (x['dismissed'].any() & x['credit_collected'].any())
+).reset_index(name='credit_collected_AND_dismissed')
+
+# Merge the result back to the original dataframe
+dp = pd.merge(dp, credit_collected_and_dismissed, on='case_concept_name', how='left')
+
+# Ensure 'credit_collected_AND_dismissed' is of boolean type
+dp['credit_collected_AND_dismissed'] = dp['credit_collected_AND_dismissed'].astype(bool)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN credit_collected_AND_dismissed BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: credit_collected_AND_dismissed, Length: 561470, dtype: bool","0"
+"Create a column called ""paid_nothing"" which is a boolean. Defined as TRUE if and only if per case the column ""maxotalPaymentAmount"" is smaller equal to 0. Make sure the value for ""paid_nothing"" is the same across all rows of a case.","paid_nothing","2","0         True
+1         True
+2         True
+3         True
+4         True
+          ... 
+561465    True
+561466    True
+561467    True
+561468    True
+561469    True
+Name: paid_nothing, Length: 561470, dtype: bool","No rationale","- 'paid_nothing' (boolean): TRUE if the 'maxtotalPaymentAmount' for a case is less than or equal to 0, indicating no payment was made; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Create the 'paid_nothing' column based on 'maxtotalPaymentAmount'
+dp['paid_nothing'] = dp['maxtotalPaymentAmount'] <= 0
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN paid_nothing BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         True
+1         True
+2         True
+3         True
+4         True
+          ... 
+561465    True
+561466    True
+561467    True
+561468    True
+561469    True
+Name: paid_nothing, Length: 561470, dtype: bool","0"
+"Create a column called ""appeal_judge_cancelled"" which is a boolean on a per case basis. TRUE if the column ""appealed_to_judge"" == TRUE AND the column ""dismissed_by_judge"" == FALSE, if else ""appeal_judge_cancelled"" == FALSE. Make sure all values of ""appeal_judge_cancelled"" are the same across all rows of a case.","appeal_judge_cancelled","2","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: appeal_judge_cancelled, Length: 561470, dtype: bool","No rationale","- 'appeal_judge_cancelled' (boolean): TRUE if an appeal was made to a judge ('appealed_to_judge' is TRUE) and the fine was not dismissed by the judge ('dismissed_by_judge' is FALSE); FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Create 'appeal_judge_cancelled' column based on conditions
+case_conditions = (dp['appealed_to_judge'] == True) & (dp['dismissed_by_judge'] == False)
+dp['appeal_judge_cancelled'] = case_conditions
+
+# Update the database table with the new column 'appeal_judge_cancelled'
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN appeal_judge_cancelled BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: appeal_judge_cancelled, Length: 561470, dtype: bool","0"
+"Create a column called ""appeal_prefecture_cancelled"" which is a boolean on a per case basis. TRUE if the column ""appealed_to_prefecture"" == TRUE AND the column ""dismissed_by_prefecture"" == FALSE, if else ""appeal_prefecture_cancelled"" == FALSE. Make sure all values of ""appeal_prefecture_cancelled"" are the same across all rows of a case.","appeal_prefecture_cancelled","2","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: appeal_prefecture_cancelled, Length: 561470, dtype: bool","No rationale","- 'appeal_prefecture_cancelled' (boolean): TRUE if an appeal was made to the prefecture ('appealed_to_prefecture' is TRUE) and the fine was not dismissed by the prefecture ('dismissed_by_prefecture' is FALSE); FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Create the 'appeal_prefecture_cancelled' column
+# TRUE if 'appealed_to_prefecture' is TRUE and 'dismissed_by_prefecture' is FALSE
+# FALSE otherwise
+dp['appeal_prefecture_cancelled'] = (dp['appealed_to_prefecture'] == True) & (dp['dismissed_by_prefecture'] == False)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN appeal_prefecture_cancelled BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: appeal_prefecture_cancelled, Length: 561470, dtype: bool","0"
+"Create a column called ""fully_paid"" which is a boolean, TRUE if ""outstanding_balance"" <= 0, if else FALSE, for every case in the event log, make sure ""fully_paid"" is the same for every row in a case","fully_paid","3","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: fully_paid, Length: 561470, dtype: bool","No rationale","- 'fully_paid' (boolean): TRUE if the 'outstanding_balance' for a case is less than or equal to 0, indicating that the case is fully paid; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Determine if each case is fully paid
+fully_paid_cases = dp.groupby('case_concept_name')['outstanding_balance'].first().le(0)
+
+# Map the result back to the original dataframe
+dp['fully_paid'] = dp['case_concept_name'].map(fully_paid_cases)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN fully_paid BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: fully_paid, Length: 561470, dtype: bool","0"
+"Create a column called ""overpaid"" which is a boolean. TRUE if on a per case basis, the column ""outstanding_balance"" is smaller than 0. False if else. Make sure the value for ""overpaid"" is the same across all rows of a case.","overpaid","3","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: overpaid, Length: 561470, dtype: bool","No rationale","- 'overpaid' (boolean): TRUE if the 'outstanding_balance' for a case is less than 0, indicating an overpayment; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Create the 'overpaid' column based on 'outstanding_balance'
+dp['overpaid'] = dp.groupby('case_concept_name')['outstanding_balance'].transform(lambda x: (x < 0).any())
+
+# Convert 'overpaid' to boolean type
+dp['overpaid'] = dp['overpaid'].astype(bool)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN overpaid BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: overpaid, Length: 561470, dtype: bool","0"
+"Create a column called ""underpaid"" which is a boolean. TRUE if on a per case basis, the column ""outstanding_balance"" is larger than 0. False if else. Make sure the value for ""underpaid"" is the same across all rows of a case.","underpaid","3","0         True
+1         True
+2         True
+3         True
+4         True
+          ... 
+561465    True
+561466    True
+561467    True
+561468    True
+561469    True
+Name: underpaid, Length: 561470, dtype: bool","No rationale","- 'underpaid' (boolean): TRUE if the 'outstanding_balance' for a case is greater than 0, indicating an underpayment; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Create the 'underpaid' column based on 'outstanding_balance'
+dp['underpaid'] = dp['outstanding_balance'] > 0
+
+# Update the database table with the new column 'underpaid'
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN underpaid BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         True
+1         True
+2         True
+3         True
+4         True
+          ... 
+561465    True
+561466    True
+561467    True
+561468    True
+561469    True
+Name: underpaid, Length: 561470, dtype: bool","0"
+"Create a column called ""credit_collected_AND_fully_paid"" which is a boolean. Defined as TRUE if per case any of the rows are TRUE in the column ""fully_paid"" and TRUE for the column ""credit_collected"". If Else False. Make sure the value for ""credit_collected_AND_fully_paid"" is the same across all rows of a case. ","credit_collected_AND_fully_paid","4","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: credit_collected_AND_fully_paid, Length: 561470, dtype: bool","No rationale","No description","0.0","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Determine if both 'credit_collected' and 'fully_paid' are TRUE for any row in each case
+dp['credit_collected_AND_fully_paid'] = dp.groupby('case_concept_name').apply(
+    lambda x: (x['credit_collected'] & x['fully_paid']).any()
+).reset_index(drop=True)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN credit_collected_AND_fully_paid BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         None
+1         None
+2         None
+3         None
+4         None
+          ... 
+561465    None
+561466    None
+561467    None
+561468    None
+561469    None
+Name: credit_collected_AND_fully_paid, Length: 561470, dtype: object","561470"
+"Create a column called ""dismissed_AND_fully_paid"" which is a boolean. Defined as TRUE if per case any of the rows are TRUE in the column ""dismissed"" and TRUE for the column ""fully_paid"". If Else False. Make sure the value for ""dismissed_AND_fully_paid"" is the same across all rows of a case. ","dismissed_AND_fully_paid","4","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: dismissed_AND_fully_paid, Length: 561470, dtype: bool","No rationale","No description","0.0","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Determine if a case is both dismissed and fully paid
+dp['dismissed_AND_fully_paid'] = dp.groupby('case_concept_name').apply(
+    lambda x: (x['dismissed'].any() & x['fully_paid'].any())
+).reset_index(drop=True)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN dismissed_AND_fully_paid BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         None
+1         None
+2         None
+3         None
+4         None
+          ... 
+561465    None
+561466    None
+561467    None
+561468    None
+561469    None
+Name: dismissed_AND_fully_paid, Length: 561470, dtype: object","561470"
+"Create a column called ""overpaid_amount"" which is an integer. Defined as 0 if the column ""overpaid"" == FALSE. If ""overpaid"" == TURE it is the difference between 0 and the column ""outstanding_balance"" (take the absolute value to avoid negative values. Make sure the value for ""overpaid_amount"" is the same across all rows of a case.","overpaid_amount","4","0         0
+1         0
+2         0
+3         0
+4         0
+         ..
+561465    0
+561466    0
+561467    0
+561468    0
+561469    0
+Name: overpaid_amount, Length: 561470, dtype: int64","No rationale","- 'overpaid_amount' (int): The absolute value of 'outstanding_balance' if 'overpaid' is TRUE, indicating the amount overpaid; otherwise, 0. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Calculate 'overpaid_amount'
+dp['overpaid_amount'] = dp.apply(lambda row: abs(row['outstanding_balance']) if row['overpaid'] else 0, axis=1)
+
+# Ensure 'overpaid_amount' is of integer type
+dp['overpaid_amount'] = dp['overpaid_amount'].astype(int)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN overpaid_amount INTEGER"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         0
+1         0
+2         0
+3         0
+4         0
+         ..
+561465    0
+561466    0
+561467    0
+561468    0
+561469    0
+Name: overpaid_amount, Length: 561470, dtype: int64","0"
+"Create a column called ""underpaid_amount"" which is a integer. Defined as 0 if the column ""underpaid"" == FALSE. If ""underpaid"" == TURE it is equal to the value of the column ""outstanding_balance"". Make sure the value for ""underpaid_amount"" is the same across all rows of a case.","underpaid_amount","4","0          4600
+1          4600
+2          8250
+3          8250
+4          8250
+          ...  
+561465    27716
+561466    27716
+561467    27716
+561468    27716
+561469    27716
+Name: underpaid_amount, Length: 561470, dtype: int64","No rationale","- 'underpaid_amount' (int): The value of 'outstanding_balance' if 'underpaid' is TRUE, indicating the amount underpaid; otherwise, 0. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Create the 'underpaid_amount' column based on the 'underpaid' and 'outstanding_balance' columns
+dp['underpaid_amount'] = dp.apply(lambda row: row['outstanding_balance'] if row['underpaid'] else 0, axis=1)
+
+# Ensure 'underpaid_amount' is of integer type
+dp['underpaid_amount'] = dp['underpaid_amount'].astype(int)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN underpaid_amount INTEGER"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0          4600
+1          4600
+2          8250
+3          8250
+4          8250
+          ...  
+561465    27716
+561466    27716
+561467    27716
+561468    27716
+561469    27716
+Name: underpaid_amount, Length: 561470, dtype: int64","0"
+"Create a column called ""part_paid"" which is a boolean. TRUE if on a per case basis, the column ""fully_paid"" AND ""paid_nothing""are equal to FALSE. If Either ""fully_paid"" OR ""paid_nothing"" == TRUE, ""part_paid"" == FALSE. Make sure the value for ""part_paid"" is the same across all rows of a case. ","part_paid","4","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: part_paid, Length: 561470, dtype: bool","No rationale","- 'part_paid' (boolean): TRUE if neither 'fully_paid' nor 'paid_nothing' is TRUE for a case, indicating partial payment; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Create the 'part_paid' column based on 'fully_paid' and 'paid_nothing'
+dp['part_paid'] = ~(dp['fully_paid'] | dp['paid_nothing'])
+
+# Ensure 'part_paid' is consistent across all rows of a case
+dp['part_paid'] = dp.groupby('case_concept_name')['part_paid'].transform('first')
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN part_paid BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: part_paid, Length: 561470, dtype: bool","0"
+"Create column called ""unresolved"" which is a boolean. TRUE if on a per case basis the column ""fully_paid"" AND ""credit_collected"" AND ""dismissed"" are == FALSE, if any of those columns are TRUE, ""unresolved"" == FALSE. Makse sure the value for ""unresolved"" is the same across all rows of a case.","unresolved","4","0          True
+1          True
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: unresolved, Length: 561470, dtype: bool","No rationale","- 'unresolved' (boolean): TRUE if, for a given case, none of the columns 'fully_paid', 'credit_collected', or 'dismissed' are TRUE, indicating the case remains unresolved; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Create 'unresolved' column based on the conditions
+unresolved_cases = dp.groupby('case_concept_name').apply(
+    lambda x: not (x['fully_paid'].any() or x['credit_collected'].any() or x['dismissed'].any())
+).rename('unresolved')
+
+# Map the 'unresolved' result back to the original dataframe
+dp['unresolved'] = dp['case_concept_name'].map(unresolved_cases)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN unresolved BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0          True
+1          True
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: unresolved, Length: 561470, dtype: bool","0"
+"Create a column called ""paid_without_obligation"" which is a boolean on a per case basis. TRUE if the column ""obligation_topay_cancelled"" == TRUE AND the column ""fully_paid"" == TRUE. If else ""paid_without_obligation"" == FALSE. Makse sure all values for ""paid_without_obligation"" are the same across all rows of a case.","paid_without_obligation","4","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: paid_without_obligation, Length: 561470, dtype: bool","No rationale","- 'paid_without_obligation' (boolean): TRUE if both 'obligation_topay_cancelled' and 'fully_paid' are TRUE for a case, indicating payment was made despite the obligation being cancelled; FALSE otherwise. This value is consistent across all rows within the same case.","True","
+import pandas as pd
+query = 'SELECT * FROM event_log'
+dp = pd.read_sql_query(query, conn, parse_dates=['time_timestamp'])
+for cols in dp.columns:
+    if dp[cols].isin([0,1]).all() and not cols.endswith(""_count""):
+        dp[cols] = dp[cols].astype(bool)
+
+# Create the 'paid_without_obligation' column based on conditions
+paid_without_obligation = dp.groupby('case_concept_name').apply(
+    lambda x: (x['obligation_topay_cancelled'] & x['fully_paid']).any()
+)
+
+# Map the result back to the original dataframe
+dp['paid_without_obligation'] = dp['case_concept_name'].map(paid_without_obligation)
+
+# Update the database table with the new column
+cur = conn.cursor()
+cur.execute(""ALTER TABLE event_log ADD COLUMN paid_without_obligation BOOLEAN"")
+dp.to_sql('temp_table', conn, if_exists='replace', index=False)
+conn.commit()
+","No code","No code","[]","0         False
+1         False
+2         False
+3         False
+4         False
+          ...  
+561465    False
+561466    False
+561467    False
+561468    False
+561469    False
+Name: paid_without_obligation, Length: 561470, dtype: bool","0"

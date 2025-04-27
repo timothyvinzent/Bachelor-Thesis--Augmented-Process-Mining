@@ -1,0 +1,264 @@
+﻿Question,Answer,Direct col to use
+How many events are in the log?,561470,
+How many cases are in the log?,150370,
+When is the start of the event log?,1/1/2000 / 2000-01-01,
+When is the end of the event log?,6/18/2013/ 2013-06-18,
+How many Create Fine events occur?,150370,
+How many Add penalty events occur?,79860,
+How many Send Appeal to Prefecture event occur?,4141,
+How many times do each of the event types occur in the log?,Create Fine 150370 Send Fine 103987 Insert Fine Notification 79860 Add penalty 79860 Payment 77601 Send for Credit Collection 59013 Insert Date Appeal to Prefecture 4188 Send Appeal to Prefecture 4141 Receive Result Appeal from Prefecture 999 Notify Result Appeal to Offender 896 Appeal to Judge 555,
+How many Send Fine events occur?,103987,send_fine_count
+How many cases are Sent for Credit Collection?,59013,
+How many cases have sent an appeal to the Prefecture?,4141,
+How many cases have been added two or more penalties?,0,add_penalty_count
+How many cases have at least one payment event?,69715,payment_count
+How many cases have two or more payment events?,7542,payment_count
+Which case has the most payment events?,C20817,payment_count
+What is the average number of payment events per case?,0.5161,payment_count
+How many payment events occur in the case with the most payment events?,15,payment_count
+How many cases do not have a payment event?,80655,payment_count
+How many cases have no Send Fine events?,46383,send_fine_count
+What is the percentage of cases in which no send fine event occurs?,0.3084 or 30.84%,send_fine_count
+What is the average number of Intert Fine Notification per case?,0.531,insert_fine_notification_count
+How many Intert Fine Notification events occur?,79860,insert_fine_notification_count
+What is the percentage of cases with an Intert Fine Notification event?,0.531 or 53.1%,insert_fine_notification_count
+How many cases have more than one Send for Credit Collection event?,0,send_for_credit_collection_count
+What is the average number of Send for Credit Collection events per case?,0.39245,send_for_credit_collection_count
+What is the percentage of cases with more than one Insert date appeal to Prefecture event?,0,insert_date_appeal_to_prefecture_count
+What is the average number of Insert date appeal to Prefecture events per case?,0.02785,insert_date_appeal_to_prefecture_count
+What is the average number of Send appeal to prefecture events per case?,0.027538,send_appeal_to_prefecture_count
+How many cases have more than one Send appeal to prefecture event?,0,send_appeal_to_prefecture_count
+What is the average number of Receive Result appeal from Prefecture events per case?,0.00664,receive_result_appeal_from_prefecture_count
+What is the average number of Notify result appeal to offender events per case?,0.005958,notify_result_appeal_to_offender_count
+What is the average number of Appeal to Judge events per case?,0.00369,appeal_to_judge_count
+How many cases have more than one Appeal to Judge event?,0,appeal_to_judge_count
+How many cases have between 2-3 events?,70271,event_count
+How many cases have between 4-7 events?,79098,event_count
+How many cases have more than 8 events?,1001,event_count
+Which case has the most events?,C20817: 20,event_count
+What is the average number of events per case?,3.73392299,event_count
+How many cases have 2 or less events per case?,66756,event_count
+How many event types are there?,11,
+How many vehicle classes are there?,4,
+How many times do each of the vehicleClasses occur?,"A    146712
+C      2456
+M      1198
+R         4",
+How many dismissal types are there?,26,
+How many times do each of the dismissal types occur?,NIL 152484 # 1980 A 213 T 111 G 93 D 36 I 29 N 28 U 11 V 10 5 10 C 10 @ 9 E 7 Z 6 M 5 F 4 R 4 3 3 K 3 B 2 $ 2 2 2 4 2 Q 1 J 1,
+How many cases have been dismissed by the prefecture?,1980,dismissed_by_prefecture
+How many cases have been dismissed by the judge?,93,dismissed_by_judge
+What is the percentage of cases which have been dismissed by the judge?,0.0006 or  0.06188%,dismissed_by_judge
+What is the percentage of cases which have been dismissed by the prefecture?,0.0131 or 1.334%,dismissed_by_prefecture
+How many cases have been dismissed?,2073,dismissed
+What is the percentage of cases which have been dismissed?,0.01378 or 1.378%,dismissed
+How many cases have been dismissed by something other than the judge or the prefecture?,504,dismissed_by_other
+What is the percentage of cases which are dismissed by something other than the judge or the prefecture?,0.00335 or 0.335%,dismissed_by_other
+How many cases have appealed to the judge?,555,appealed_to_judge
+What is the percentage of cases which have appealed to the judge?,0.00369 or 0.369%,appealed_to_judge
+How many cases have appealed to the prefecture?,4188,appealed_to_prefecture
+Whas is the precentage of cases which have appealed to the prefecture?,0.02785 or 2.785%,appealed_to_prefecture
+How many cases have appealed to either the judge or the prefecture?,4555,appeal_to_judgeorprefecture
+What is the precentage of cases which have appealed to either the judge or the prefecture?,0.03029 or 3.029%,appeal_to_judgeorprefecture
+How many cases have had their appeal rejected by the judge?,462,appeal_judge_cancelled
+How many cases have had their appeal rejected by the prefecture?,2208,appeal_prefecture_cancelled
+Which case has the highest expense sum?,S183468 and  S176946 both having 7600,expense_sum
+What are the top 10 cases with the highest expense sum?,"The Top 7 are:
+S176946:	7600
+S183468:	7600
+S182605:	7500
+S189726:	6000
+P220:	6000
+S181646:	6000
+S185752:	5088
+
+Then there are 8 cases which all have 4600 these are:
+P4461,
+S190328,
+S182039,
+S184956,
+P5574,
+S186378,
+S187677, P4429 ",expense_sum
+What is the average expense sum per case?,826.3201237,expense_sum
+How many cases have an expense sum which is equal to zero?,49243,expense_sum
+What are the expense sums of the 10 cases with the highest expense sum?,"7600, 7600,7500, 6000, 6000,6000,5088, and 8 cases with 4600",expense_sum
+How many cases have been credit collected? ,59013,credit_collected
+What is the precentage of cases that where credit collected?,0.3924 or 39.24%,credit_collected
+How many cases as the obligation to pay been cancelled?,49772,obligation_topay_cancelled
+What is the percentage of cases for which the obligation to pay has been cancelled?,0.3309 or 33.09%,obligation_topay_cancelled
+What is the percentage of cases in which a penalty has been added?,0.531 or 53.1%,penalty_added
+How many cases have been added a penalty?,79860,penalty_added
+Which case as the most penalties added?,"79860 cases have been addded 1 penalty, there are no cases with more than 1 penalty",add_penalty_count
+How many penalties have been added to the case with the most penalties?,1,add_penalty_count
+How many cases have been added no penalties?,70510,penalty_added
+How many penalties have been added to all the cases in total?,79860,add_penalty_count
+What is the average number of penalties added to a case?,0.531089,add_penalty_count
+Which case has been added the second most penalties? (may include multiple cases if they have the same number of penalties),"79860 cases have been addded 1 penalty, there are no cases with more than 1 penalty, so any of those 79860 cases could be considered to have the second most penalties added",add_penalty_count
+What are the top 10 cases with the longest duration(in days)?,"V3904:4372 days
+N22795: 4352 days
+V4290: 4341 days
+S38092:4339 days
+V4358: 4320 days
+V4425:4308 days
+V5141: 4217 days
+V5285: 4212 days
+V5624: 4202 days
+V6005: 4176 days
+V6555: 4140 days",duration
+Which case has the longest duration?,"V3904 , 377740800.0 seconds OR 4372.0 days",duration
+What is the average duration of a case?,"Average case duration: 341.0 days, 16.0 hours, 6.0 minutes, 1 second OR 29520361.029460665 seconds",duration
+Which case has the highest maxtotalPaymentAmount?,S109961: 402100,maxtotalPaymentAmount
+What is the average maxtotalPaymentAmount per case? ,2396.577176,maxtotalPaymentAmount
+How many cases have a maxtotalPaymentAmount equaling zero?,80656,maxtotalPaymentAmount
+What are the top 10 cases with the highest maximum totalPaymentAmount?,"S109961: 402100 ,
+C23364: 184200
+C23357: 159700 
+C19723: 149850 
+C18271: 143350 
+S161037: 82300 
+S161032: 81300 
+S161018: 81300 
+S161025: 81300 
+C21036: 79810",maxtotalPaymentAmount
+What are the top 10 cases with the highest single payment amount?,"S109961: 397500, 
+C23357: 159700, 
+C19723: 149850, 
+C18271: 143350, 
+C23364: 106400, 
+S161037: 82300, 
+C21036: 79810, 
+C20860: 79800, 
+C19617: 79150, 
+C21314: 77950",
+"Which case has the highest amount payable by the offender, including ties?","C18395:    800000,
+C15814:    800000",
+Which case has the highest signle totalPaymentAmount?,S109961: 402100,
+Which case has the highest single paymentAmount?,S109961: 397500,
+Which case has the highest amount min?,C15814,amount_min
+Which 10 cases have the highest amount min?,"The top 9 are: 
+C15814:	435100,
+C18395:	400000,
+C22583:	188600,
+C21853:	188600,
+C21090:	184200,
+C23364:	184200,
+C20473:	184200,
+C22584:	172500,
+C17345:	162645,
+The 10th spot is shared among 27 cases which all have the value 79800, these are: 
+C22605,C22091,C22650,C22355,C22607,C22308,C22602,C22588,C21627,C22413,C22426,C22436,C22001,S178436,C20860,C22510,C22750,C23357,S161018,C22301,C22292,C22290,C21993,C22285,C22701,C22807,C22811",amount_min
+What is the lowest amount min found in the event log?,0,amount_min
+How many cases have the lowest amount min found in the event log?,36 cases have an amount min of 0,amount_min
+Which case has the highest amount last?,Case  C18395 and  C15814 both have the highest amount_last with a value of  800000,amount_last
+Which 10 cases have the highest amount last?,"The top 9 cases with the highest amount last are:
+
+C18395:	 800000
+C15814:	 800000
+C21853:	 754600
+C22583:	 754600
+C20473:	 368450
+C21090:	 368450
+C23364:	 368450
+C22584:	 345150
+C17345:	 325290
+
+The 10th spot is shared by  5 cases with a value of 222000, these are:
+C22820,C22283,C21546,C22740,C22704",amount_last
+What are the amount last values of the 10 cases with the highest amount last?,"800000,800000,754600,754600,368450,368450,368450,345150, 325290",amount_last
+What is the lowest amount last found in the event log?,0,amount_last
+How many cases have the lowest amount last found in the event log? ,36,amount_last
+Which case has the highest outstanding balance?,"C18395:	801985",outstanding_balance
+What is the average outstanding balance per case?,5571.34701,outstanding_balance
+What are the top 10 cases whith the highest outstanding balance?,"The top 9 cases with the highest outstanding balance are:
+C18395: 801985,
+C15814: 800000,
+C21853: 754600,
+C22583: 754600,
+C20473: 368450,
+C21090: 368450,
+C22584: 345150,
+C17345: 325290,
+The 10th place is shared with a value of 222000 among the cases:
+C22820,C21546,C22704,C22740,C22283,",outstanding_balance
+How many cases have paid nothing?,80656,paid_nothing
+What is the percentage of cases which have paid nothing?,0.5363 or 53.63%,paid_nothing
+How many cases have overpaid?,2215,overpaid
+What is the percentage of cases which have overpaid?,0.01473 or 1.473%,overpaid
+How many cases have underpaid?,90066,underpaid
+What is the percentage of cases which have underpaid?,0.5989 or 59.89%,underpaid
+Which case has overpaid the highest amount?,S109961,overpaid_amount
+What is the overpaid amount of the case with the highest overpaid amount?,393525,overpaid_amount
+Which case has the highest underpaid amount?,C18395,underpaid_amount
+What is the underpaid amount of the case with the highest underpaid amount?,801985,underpaid_amount
+How many cases have only partly paid?,9413,part_paid
+What is the percentage of cases which have only partly paid?,0.06259 or 6.259%,part_paid
+How many cases have paid without an obligation to pay?,6930,paid_without_obligation
+What is the percentage of cases which have paid without an obligation to pay?,0.04608 or 4.608%,paid_without_obligation
+How many cases have been credit collected and dismissed?,0,credit_collected_AND_dismissed
+How many cases have been fully paid?,60304,fully_paid
+What is the percentage of cases which have been fully paid?,0.40103 or 40.103%,fully_paid
+How many cases have fully paid and been credit collected?,3,credit_collected_AND_fully_paid
+How many cases have been dimissed and fully paid?,1,dismissed_AND_fully_paid
+How many cases are unresolved?,28984,unresolved
+What is the percentage of cases which are unresolved?,0.19275 or 19.275%,unresolved
+How many cases have a maxtotalPaymentAmount higher than 3000?,66373,maxtotalPaymentAmount
+How many cases have a maxtotalPaymentAmount higher than 4000?,23728,maxtotalPaymentAmount
+How many cases have a maxtotalPaymentAmount higher than 50000?,76,maxtotalPaymentAmount
+How many cases have a maxtotalPaymentAmount higher than 81000?,9,maxtotalPaymentAmount
+How many cases have a maxtotalPaymentAmount lower than 1000?,80670,maxtotalPaymentAmount
+How many cases have a maxtotalPaymentAmount lower than 5900?,134086,maxtotalPaymentAmount
+How many cases have a maxtotalPaymentAmount lowerr than 60700?,150306,maxtotalPaymentAmount
+How many cases have an event_count higher than 8?,822,event_count
+How many cases have an event_count higher equal 8?,1001,event_count
+How many cases have an event_count lower than 2?,0,event_count
+How many cases have an event_count lower equal 2?,66756,event_count
+How many cases have an expense_sum higher than 1350?,23914,expense_sum
+How many cases have an expense_sum higher equal 1350?,42547,expense_sum
+How many cases have an expense_sum lower than 671?,54244,expense_sum
+How many cases have an expense_sume lower equal 671?,62742,expense_sum
+How many cases have an amount_min higher than 3800?,29714,amount_min
+How many cases have an amount_min higher equal 3800?,44453,amount_min
+How many cases have an amount_min lower than 3279?,34564,amount_min
+How many cases have an amount_min lower equal 3279?,43863,amount_min
+How many cases have an amount_last higher than 7400?,28401,amount_last
+How many cases have an amount_last higher equal 7400?,37575,amount_last
+How many cases have an amount_last lower than 3936?,64961,amount_last
+How many cases have an amount_last lower equal 3936?,65851,amount_last
+How many cases have a payment_count larger than 10?,3,payment_count
+How many cases have a payment_count larger equal 10?,9,payment_count
+How many cases have a payment_count lower than 1?,80655,payment_count
+How many cases have a payment_count lower equal 1?,142828,payment_count
+How many cases have an outstanding_balance lower than 0?,2215,outstanding_balance
+How many cases have an outstanding_balance lower equal 0?,60304,outstanding_balance
+How many cases have an outstanding_balance higher than 8700?,24539,outstanding_balance
+How many cases have an outstanding_balance higher equal 8700?,28598,outstanding_balance
+How many cases have an overpaid_amount higher than 5000?,103,overpaid_amount
+How many cases have an overpaid_amount higher equal 5000?,104,overpaid_amount
+How many cases have an overpaid_amount lower than 50?,149472,overpaid_amount
+How many cases have an overpaid_amount lower equal 50?,149493,overpaid_amount
+How many cases have an underpaid_amount lower than 100?,60647,underpaid_amount
+How many cases have an underpaid_amount lower equal 100?,60673,underpaid_amount
+How many cases have an underpaid_amount higher than 8700?,24539,underpaid_amount
+How many cases have an underpaid_amount higher equal 8700?,28598,underpaid_amount
+How many cases are fully_paid AND obligation_topay_cancelled OR credit_collected AND obligation_topay_cancelled OR dismissed AND obligation_topay_cancelled ,34183,"dismissed, fully_paid, credit_collected, obligation_topay_cancelled"
+How many cases have penalty_added == True AND unresolved == True AND underpaid_amount > 0 AND obligation_topay_cancelled == True?,3762,"penalty_added, unresolved, underpaid_amount, obligation_topay_cancelled"
+How many cases have dismissed == False AND both appeal_judge_cancelled and appeal_prefecture_cancelled == True AND dismissed_by_other == True?,0,"dismissed, appeal_judge_cancelled, appeal_prefecture_cancelled, dismissed_by_other"
+How many cases have dismissed == False AND either appeal_judge_cancelled == True OR appeal_prefecture_cancelled == True AND dismissed_by_other == True?,5,"dismissed, appeal_judge_cancelled, appeal_prefecture_cancelled, dismissed_by_other"
+How many cases have dimissed == False AND appeal_judge_cancelled == True AND appeal_prefecture_cancelled == False AND dismissed_by_other ==True?,0,"dismissed, appeal_judge_cancelled, appeal_prefecture_cancelled, dismissed_by_other"
+How many cases have dimissed == False AND appeal_judge_cancelled == False AND appeal_prefecture_cancelled == True AND dismissed_by_other ==True?,5,"dismissed, appeal_judge_cancelled, appeal_prefecture_cancelled, dismissed_by_other"
+Which case is underpaid == True AND part_paid == True AND payment_count larger than 4 AND underpaid_amount larger than 150000 AND credit_collected == False AND dismissed == False?,C23364,"underpaid, part_paid, appeal_judge_cancelled, appeal_prefecture_cancelled, dismissed_by_other"
+How many cases have undresolved == True AND obligation_topay_cancelled = False?,13395,"unresolved, obligation_topay_cancelled"
+How many cases have unresolved == True AND obligation_topay_cancelled == False AND underpaid_amount larger than 150000 AND duration larger than 15552000?,2,"unresolved, obligation_topay_cancelled, underpaid_amount, duration"
+How many cases beginn before 2002-04-24 AND have a duration smaller than 5?,455,
+How many cases have a time_timestamp_beginn higher equal 2002-04-24 AND time_timestamp_end lower equal 2002-12-24?,4607,"time_timestamp_beginn, time_timestamp_end"
+How many cases beginn after 2013-04-24?,803,time_timestamp_beginn
+How many cases have a time_timestamp_beginn smaller than 2013-04-24?,803,time_timestamp_beginn
+How many cases are credit collected before 2002-12-24?,9383,"credit_collected, time_timestamp_end"
+How many cases have credit_collected == True AND time_timestamp_end < 2002-12-24?,9383,"credit_collected, time_timestamp_end"
+How many Send for Credit Collection events occur before 2002-12-24?,9383,"time_timestamp, concept_name"
+How many Send for Credit Collection events occur at most 290 days after the start of their associated case?,12,"concept_name, time_timestamp, time_timestamp_beginn"
+How many Insert Fine Notification events occur at most 1 day after the start of their associated case?,2741,"concept_name, time_timestamp, time_timestamp_beginn"
+How many Send for Credit Collection event occur not before 1900 days after the start of their associated case?,3,"concept_name, time_timestamp, time_timestamp_beginn"
+How many Insert Date Appeal to Prefecture events occur within 15 days of the end of their associated case? ,208,"concept_name, time_timestamp, time_timestamp_end"
+How many Add penalty events occur within 3 days of the end of their associated case?,2774,"concept_name, time_timestamp, time_timestamp_end"

@@ -1,0 +1,131 @@
+﻿question,example_answer,pred_answer,score
+How many events are in the log?,561470,Answer: 561470,2
+How many cases are in the log?,150370,Answer: 150370,2
+How many Create Fine events occur?,150370,Answer: 150370,2
+How many Add penalty event occur?,79860,Answer: 79860,2
+How many Send Appeal to Prefecture event occur?,4141,Answer: 4141,2
+How many times do each of the event types occur in the log?,Create Fine 150370 Send Fine 103987 Insert Fine Notification 79860 Add penalty 79860 Payment 77601 Send for Credit Collection 59013 Insert Date Appeal to Prefecture 4188 Send Appeal to Prefecture 4141 Receive Result Appeal from Prefecture 999 Notify Result Appeal to Offender 896 Appeal to Judge 555,"concept:name|event_count
+Add penalty|79860
+Appeal to Judge|555
+Create Fine|150370
+Insert Date Appeal to Prefecture|4188
+Insert Fine Notification|79860
+Notify Result Appeal to Offender|896
+Payment|77601
+Receive Result Appeal from Prefecture|999
+Send Appeal to Prefecture|4141
+Send Fine|103987
+Send for Credit Collection|59013",2
+How many event types are there?,11,Answer: 11,2
+How many cases are Sned for Credit Collection?,59013,Answer: 59013,2
+How many cases have sent an appeal to the Prefecture?,4141,Answer: 0,0
+How many cases have been added a penalty?,79860,Answer: 79860,2
+How many cases have been added two or more penalties?,0,Answer: 3,0
+How many cases have at least one payment event?,69715,Answer: 69715,2
+How many cases have two or more payment events?,7542,Answer: 7542,2
+Which case has the most payment events?,C20817,Answer: Case C20817 has the most payment events with 15 occurrences.,2
+How many cases have between 2-3 events?,70271,Answer: 70271,2
+How many cases have between 4-7 events?,79098,Answer: 79098,2
+How many cases have more than 8 events?,1001,Answer: 822,0
+Which case has the most events?,C20817: 20,Answer: Case C20817 has the most events with 20 occurrences.,2
+How many vehicle classes are there?,4,Answer: 4,2
+How many times do each of the vehicleClasses occur?,"A    146712
+C      2456
+M      1198
+R         4","Answer: None occurred 0 times, A occurred 146712 times, C occurred 2456 times, M occurred 1198 times, and R occurred 4 times.",2
+How many dismissal types are there?,26,Answer: 26,2
+How many times do each of the dismissal types occur?,"NIL: 152484,
+ #: 1980, 
+A: 213,
+T: 111, 
+G: 93, 
+D: 36, 
+I: 29, 
+N: 28,
+U: 11, 
+V: 10, 
+5: 10, 
+C: 10, 
+@: 9, 
+E: 7,
+Z: 6, 
+M: 5, 
+F: 4, 
+R: 4, 
+3: 3, 
+K: 3, 
+B: 2, 
+$: 2, 
+2: 2, 
+4: 2, 
+Q: 1, 
+J: 1,","Answer: 
+None: 406404
+#: 1980
+$: 2
+2: 2
+3: 3
+4: 2
+5: 10
+@: 9
+A: 213
+B: 2
+C: 10
+D: 36
+E: 7
+F: 4
+G: 93
+I: 29
+J: 1
+K: 3
+M: 5
+N: 28
+NIL: 152484
+Q: 1
+R: 4
+T: 111
+U: 11
+V: 10
+Z: 6",2
+What are the top 10 cases with the longest duration(in days)?,"V3904:4372 days
+N22795: 4352 days
+V4290: 4341 days
+S38092:4339 days
+V4358: 4320 days
+V4425:4308 days
+V5141: 4217 days
+V5285: 4212 days
+V5624: 4202 days
+V6005: 4176 days
+V6555: 4140 days","Answer: V3904, N22795, V4290, S38092, V4358, V4425, V5141, V5285, V5624, V6005",2
+What is the average total payment amount per case?,1.113117693,The average total payment amount per case is $18.,0
+What is the average number of events per case?,3.73392299,Answer: 0,0
+What are the top 10 cases with the highest total payment amount?,"S109961: 4021.0 ,
+C23364: 1842.0
+C23357: 1597.0 
+C19723: 1498.5 
+C18271: 1433.5 
+S161037: 823.0 
+S161032: 813.0 
+S161018: 813.0 
+S161025: 813.0 
+C21036: 798.1","Answer: C20817, C23364, V18366, S109961, C17607, C18190, C19108, S161018, C13062, C10852",1
+What are the top 10 cases with the highest payment amount?,"S109961: 3975.0
+C23357: 1597.0 
+C19723: 1498.5 
+C18271: 1433.5 
+C23364: 1064.0 
+S161037: 823.0 
+C21036: 798.1 
+C20860: 798.0 
+C19617: 791.5 
+C21314: 779.5","S109961, C23364, C23357, C19723, C18271, S161037, S161018, S161025, S161032, C21036",1
+What is the average duration of a case?,"Average case duration: 341.0 days, 16.0 hours, 6.0 minutes, 1.0294606648385525 seconds OR 29520361.029460665 seconds",Answer: The average duration of a case is 341.67 days.,1
+Which case has the longest duration?,"V3904 , 377740800.0 seconds OR 4372.0 days",Answer: V3904,2
+Which case has the highest amount payable by the offender?,"C18395    8000.0
+C15814    8000.0","Answer: Case C15814 has the highest amount payable by the offender, which is $8000.00.",1
+Which case has the highest total payment amount?,S109961 4021.0,Answer: Case S109961 has the highest total payment amount of 4021.0,2
+Which case has the highest payment amount?,S109961 3975.0,Answer: Case S109961 has the highest payment amount of 3975.0,2
+Which case has the longest duration?,"V3904 , 377740800.0 seconds OR 4372.0 days",Answer: V6689,0
+Which case has the highest payment amount?,S109961: 3975.0,Answer: S109961,2
+How many times do each of the dismissal types occur?,"NIL: 152484, # : 1980, A : 213, T : 111, G : 93, D :36, I : 29, N :28, U : 11, V : 10, 5 : 10, C : 10, @ : 9, E : 7, Z: 6, M : 5, F : 4, R : 4 ,3 :3 ,K : 3 ,B :2, $ : 2,2: 2, 4 : 2, Q: 1, J :1","Answer: None - 406404, # - 1980, $ - 2, 2 - 2, 3 - 3, 4 - 2, 5 - 10, @ - 9, A - 213, B - 2, C - 10, D - 36, E - 7, F - 4, G - 93, I - 29, J - 1, K - 3, M - 5, N - 28, NIL - 152484, Q - 1, R - 4, T - 111, U - 11, V - 10, Z - 6",2

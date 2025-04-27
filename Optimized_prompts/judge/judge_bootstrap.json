@@ -1,0 +1,105 @@
+{
+  "scorer": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "question": "How many vehicle classes are there?",
+        "solution": "4",
+        "prediction": "Answer: 4",
+        "reasoning": "The prediction provides the exact number of vehicle classes as stated in the solution. Both the prediction and the solution match perfectly in terms of content.",
+        "answer": "2"
+      },
+      {
+        "augmented": true,
+        "question": "How many Send Appeal to Prefecture event occur?",
+        "solution": "4141",
+        "prediction": "Answer: 4141",
+        "reasoning": "The prediction provides the exact number of occurrences for the \"Send Appeal to Prefecture\" event, which matches the solution perfectly. Therefore, the prediction is an exact match in terms of content.",
+        "answer": "2"
+      },
+      {
+        "augmented": true,
+        "question": "How many cases have between 4-7 events?",
+        "solution": "79098",
+        "prediction": "Answer: 79098",
+        "reasoning": "The prediction provides the exact numerical answer to the question regarding the number of cases with between 4-7 events. It matches the solution perfectly in terms of content.",
+        "answer": "2"
+      },
+      {
+        "augmented": true,
+        "question": "How many Create Fine events occur?",
+        "solution": "150370",
+        "prediction": "Answer: 150370",
+        "reasoning": "The prediction provides the exact number of Create Fine events as stated in the solution. Therefore, it matches perfectly in terms of content.",
+        "answer": "2"
+      },
+      {
+        "augmented": true,
+        "question": "Which case has the most payment events?",
+        "solution": "C20817",
+        "prediction": "Answer: Case C20817 has the most payment events with 15 occurrences.",
+        "reasoning": "The prediction identifies the case with the most payment events as C20817, which matches the solution provided. However, it also includes additional information about the number of occurrences (15), which is not part of the original question. Despite this extra detail, the core content regarding the case itself is accurate and aligns with the solution.",
+        "answer": "2"
+      },
+      {
+        "augmented": true,
+        "question": "What are the top 10 cases with the highest total payment amount?",
+        "solution": "S109961: 4021.0 ,\nC23364: 1842.0\nC23357: 1597.0 \nC19723: 1498.5 \nC18271: 1433.5 \nS161037: 823.0 \nS161032: 813.0 \nS161018: 813.0 \nS161025: 813.0 \nC21036: 798.1",
+        "prediction": "Answer: C20817, C23364, V18366, S109961, C17607, C18190, C19108, S161018, C13062, C10852",
+        "reasoning": "The prediction provides a list of case identifiers, but it does not match the specific cases listed in the solution, which are the top 10 cases based on the highest total payment amounts. While some cases from the solution (like C23364 and S109961) appear in the prediction, the majority do not, and the prediction does not provide the correct cases or their associated payment amounts. Therefore, it only partially answers the question.",
+        "answer": "1"
+      },
+      {
+        "augmented": true,
+        "question": "How many times do each of the vehicleClasses occur?",
+        "solution": "A    146712\nC      2456\nM      1198\nR         4",
+        "prediction": "Answer: None occurred 0 times, A occurred 146712 times, C occurred 2456 times, M occurred 1198 times, and R occurred 4 times.",
+        "reasoning": "The prediction provides a detailed breakdown of the occurrences for each vehicle class, including the class that occurred 0 times, which is not mentioned in the solution. The prediction matches the counts given in the solution for classes A, C, M, and R, but adds additional information about the class that did not occur. Therefore, it answers the question completely and accurately, though it includes extra information.",
+        "answer": "2"
+      },
+      {
+        "augmented": true,
+        "question": "Which case has the highest amount payable by the offender?",
+        "solution": "C18395    8000.0\nC15814    8000.0",
+        "prediction": "Answer: Case C15814 has the highest amount payable by the offender, which is $8000.00.",
+        "reasoning": "The prediction correctly identifies Case C15814 as having the highest amount payable by the offender and provides the correct amount of $8000.00. However, it does not mention Case C18395, which also has the same highest amount. Therefore, while the prediction is accurate regarding one case, it does not fully address the question as it omits another relevant case with the same amount.",
+        "answer": "1"
+      }
+    ],
+    "signature": {
+      "instructions": "Assess how closely the Answer matches the prediction in relation to the question. Differences in formating are less important than the actual content. Plausible methods to arrive at the answer are not considered. Only consider the Answer and the Prediction + the Question, nothing else is relevant to you.",
+      "fields": [
+        {
+          "prefix": "Question:",
+          "description": "${question}"
+        },
+        {
+          "prefix": "Solution:",
+          "description": "${solution}"
+        },
+        {
+          "prefix": "Prediction:",
+          "description": "${prediction}"
+        },
+        {
+          "prefix": "Reasoning:",
+          "description": "Reasoning behind the score"
+        },
+        {
+          "prefix": "Answer:",
+          "description": "0 means its absolutely wrong, 1 means that the prediction answers parts of the question but not all of it, 2 means its an exact match in terms of content"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.12.8",
+      "dspy": "2.5.43",
+      "cloudpickle": "3.1.0"
+    }
+  }
+}

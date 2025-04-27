@@ -1,0 +1,105 @@
+{
+  "scorer": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "question": "Which case has the longest duration?",
+        "example": "V3904 , 377740800.0 seconds OR 4372.0 days",
+        "prediction": "Answer: V6689",
+        "score": "2",
+        "reasoning": "The provided answer does not contain any information or data regarding the case duration or comparison to other cases. Therefore, it cannot be evaluated against the prediction, which specifically names a case (V6689). Since there is no content in the answer to assess, the score is 0."
+      },
+      {
+        "augmented": true,
+        "question": "How many times do each of the dismissal types occur?",
+        "example": "NIL: 152484,\n #: 1980, \nA: 213,\nT: 111, \nG: 93, \nD: 36, \nI: 29, \nN: 28,\nU: 11, \nV: 10, \n5: 10, \nC: 10, \n@: 9, \nE: 7,\nZ: 6, \nM: 5, \nF: 4, \nR: 4, \n3: 3, \nK: 3, \nB: 2, \n$: 2, \n2: 2, \n4: 2, \nQ: 1, \nJ: 1,",
+        "prediction": "Answer: \nNone: 406404\n#: 1980\n$: 2\n2: 2\n3: 3\n4: 2\n5: 10\n@: 9\nA: 213\nB: 2\nC: 10\nD: 36\nE: 7\nF: 4\nG: 93\nI: 29\nJ: 1\nK: 3\nM: 5\nN: 28\nNIL: 152484\nQ: 1\nR: 4\nT: 111\nU: 11\nV: 10\nZ: 6",
+        "score": "2",
+        "reasoning": "The prediction matches the example provided in the question exactly in terms of content, listing all the dismissal types with their respective counts. The only difference is the inclusion of \"None: 406404\" in the prediction, which does not appear in the example but does not contradict or alter the information requested by the question. Thus, the prediction fully addresses the question, and the score is 2."
+      },
+      {
+        "augmented": true,
+        "question": "How many cases are Sned for Credit Collection?",
+        "example": "59013",
+        "prediction": "Answer: 59013",
+        "score": "2",
+        "reasoning": "The prediction matches the answer exactly in terms of content. Both the prediction and the answer provide the same number, 59013, which directly answers the question asked."
+      },
+      {
+        "augmented": true,
+        "question": "Which case has the highest payment amount?",
+        "example": "S109961 3975.0",
+        "prediction": "Answer: Case S109961 has the highest payment amount of 3975.0",
+        "score": "2",
+        "reasoning": "The prediction directly answers the question by identifying the specific case with the highest payment amount and providing the exact amount, which matches the example provided. The content of the prediction is an exact match to the question asked."
+      },
+      {
+        "augmented": true,
+        "question": "Which case has the highest total payment amount?",
+        "example": "S109961 4021.0",
+        "prediction": "Answer: Case S109961 has the highest total payment amount of 4021.0",
+        "score": "2",
+        "reasoning": "The prediction directly answers the question by identifying the specific case with the highest total payment amount and provides the exact amount, which matches the example provided. The content of the prediction is an exact match to the question asked."
+      },
+      {
+        "augmented": true,
+        "question": "How many cases have been added two or more penalties?",
+        "example": "0",
+        "prediction": "Answer: 3",
+        "score": "0",
+        "reasoning": "The prediction states that there are 3 cases with two or more penalties, while the answer indicates there are 0 such cases. The content of the answer does not match the prediction at all.\n\nScore: 0"
+      },
+      {
+        "augmented": true,
+        "question": "How many cases have more than 8 events?",
+        "example": "1001",
+        "prediction": "Answer: 822",
+        "score": "0",
+        "reasoning": "The answer provided does not contain any numerical or descriptive content that matches or addresses the prediction or the question. The answer is completely missing, thus it cannot be evaluated against the prediction."
+      },
+      {
+        "augmented": true,
+        "question": "How many cases have sent an appeal to the Prefecture?",
+        "example": "4141",
+        "prediction": "Answer: 0",
+        "score": "0",
+        "reasoning": "The prediction does not provide any numerical or relevant information regarding the number of cases that have sent an appeal to the Prefecture. It simply states \"Answer: 0,\" which does not address the question asked. Therefore, the score is 0, indicating that the prediction is absolutely wrong and does not match the content of the question at all."
+      }
+    ],
+    "signature": {
+      "instructions": "Assess how closely the Answer matches the prediction in relation to the question. Differences in formating are less important than the actual content. Plausible methods to arrive at the answer are not considered. Only consider the Answer and the Prediction + the Question, nothing else is relevant to you.",
+      "fields": [
+        {
+          "prefix": "Question:",
+          "description": "${question}"
+        },
+        {
+          "prefix": "Solution:",
+          "description": "${solution}"
+        },
+        {
+          "prefix": "Prediction:",
+          "description": "${prediction}"
+        },
+        {
+          "prefix": "Reasoning:",
+          "description": "Reasoning behind the score"
+        },
+        {
+          "prefix": "Answer:",
+          "description": "0 means its absolutely wrong, 1 means that the prediction answers parts of the question but not all of it, 2 means its an exact match in terms of content"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.12.8",
+      "dspy": "2.5.43",
+      "cloudpickle": "3.1.0"
+    }
+  }
+}
