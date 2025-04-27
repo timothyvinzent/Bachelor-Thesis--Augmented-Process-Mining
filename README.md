@@ -34,8 +34,8 @@ The system uses RAG (ChromaDB) for column context and a Column Dependency Graph 
 
 1.  **Clone Repository:**
     ```bash
-    git clone https://github.com/[timothyvinzen]/[Bachelor-Thesis--Augmented-Process-Mining].git
-    cd [Bachelor-Thesis--Augmented-Process-Mining]
+    git clone https://github.com/timothyvinzent/Bachelor-Thesis--Augmented-Process-Mining.git
+    cd Bachelor-Thesis--Augmented-Process-Mining
     ```
 2.  **Python Environment:**
     *   The project uses **Python 3.12.8**.
